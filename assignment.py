@@ -2,6 +2,7 @@ import pandas as pd
 import datetime
 import numpy as np
 from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
 
 taxi = pd.read_csv('taxi_train.csv', sep=',')
 taxi.head(10)
@@ -121,11 +122,22 @@ print(cluster)
 # Task 2.2.1  Use K-mean algorithm to find 30 cluster centers of the coordinates obtained from  Task 1.2.1
 #                  You may implement your own K-mean algorithm or simply adopt the API sklearn.cluster.KMeans
 #                   ref: https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
-                
-kmeans = KMeans(n_clusters=30, random_state=0).fit(cluster)
-#print(kmeans)
-    
-# Task 2.2.2 Describe how many % of order has started from a cluster centers and ends at the same cluster centers.  
+data_size = len(pickup_x)
+x = np.array([pickup_x + dropoff_x])
+y = np.array([pickup_y + dropoff_y])
+position = np.vstack((x,y)).T
+#position_df = pd.DataFrame(position,columns = ['x','y'])
+kmeans = KMeans(n_clusters=30, random_state=0)
+kmeans.fit(position)
+#print(kmeans.cluster_centers_)
+
+# Task 2.2.2 Describe how many % of order has started from a cluster centers and ends at the same cluster centers. 
+same_center = 0
+for i in range(data_size):
+	if kmeans.labels_[i] == kmeans.labels_[data_size+i]:
+		same_center = same_center + 1
+percentage = same_center/data_size
+print(percentage)
 
 
 # Task 3 - Simple Data Visualization 
@@ -156,6 +168,3 @@ monday8am.head(10)
 
 best_tips = pd.read_csv('5_2_testing.csv', sep=',', nrows=10)
 best_tips.head(10)
-
-
-
