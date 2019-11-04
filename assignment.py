@@ -115,7 +115,7 @@ cluster['interval'] = time_step
 number = []
 for i in range(len(time_step)-1):
 	number.append(taxi.between_time(time_step[i], time_step[i+1]).shape[0])
-number.append(taxi.between_time(time_step[i], datetime.time(23,59,59)).shape[0])
+number.append(taxi.between_time(time_step[i+1], datetime.time(23,59,59)).shape[0])
 cluster['number'] = number
 print(cluster)
 
